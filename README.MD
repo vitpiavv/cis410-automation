@@ -29,3 +29,13 @@ infrastructure as code, and cloud deployment.
 ## Fun Fact
 
 [Share one fun fact about yourself]
+
+## My Week 2 Infrastructure
+
+ 
+
+Runner VM: runner
+
+Runner IP: 192.168.1.164
+
+Pipeline status: [![Hello Pipeline](https://github.com/YOUR-USERNAME/cis-410-cybersecurity-automation/actions/workflows/hello-pipeline.yml/badge.svg)](https://github.com/YOUR-USERNAME/cis-410-cybersecurity-automation/actions/workflows/hello-pipeline.yml)
