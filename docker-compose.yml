@@ -20,3 +20,5 @@ services:
       - COMMIT_SHA=${GITHUB_SHA:-local}
       - BRANCH=${GITHUB_REF_NAME:-main}
       - WORKFLOW=deploy-${ENVIRONMENT:-dev}.yml
+      #retriggering :) 
+      
