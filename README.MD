@@ -1,40 +1,55 @@
-# CIS 410 — Week 5 Code Package
+# CIS 410 — Week 6 Code Package
 
-## Contents
+## Expected result after terraform apply
 
-### Fixed Application (copy into your repo's `app/`)
-- `app/app.py` — CorpDirectory with all 4 vulnerabilities fixed
-- `app/requirements.txt` — clean dependencies
-- `app/templates/index.html` — secure version with fix summary panel
-- `app/templates/search.html` — parameterized query display
+```
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
-### Fixed Dockerfile (replaces `Dockerfile` in repo root)
-- `Dockerfile` — python:3.11-slim, non-root user, correct layer order
+Outputs:
 
-### Workflow files (copy into `.github/workflows/`)
-- `scan.yml` — Snyk security gate on all pull requests (no installation needed)
-- `dast-scan.yml` — OWASP ZAP dynamic scan, manual trigger
+tf_state_bucket_name = "cis410-yourname-tfstate"
+tf_state_bucket_url  = "gs://cis410-yourname-tfstate"
+logs_bucket_name     = "cis410-yourname-logs"
+logs_bucket_url      = "gs://cis410-yourname-logs"
+project_id           = "cis410-yourname-xxxx"
+```
 
-## Required GitHub Secret
+Both buckets will appear in GCP Console → Cloud Storage → Buckets.
 
-Before scan.yml will work you need one new secret:
+## Quick start
 
-| Secret     | Value              | How to get it                                    |
-|------------|--------------------|--------------------------------------------------|
-| SNYK_TOKEN | Your Snyk API token | snyk.io → Account Settings → Auth Token (free) |
+```bash
+# 1. Copy into your repo
+cp -r terraform/ ~/cis-410-cybersecurity-automation/
 
-Add it: GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+# 2. Set your Project ID
+cd ~/cis-410-cybersecurity-automation/terraform/week6
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars — replace cis410-yourname-xxxx with your actual Project ID
 
-## Week 5 Lab Flow
+# 3. Run the workflow
+terraform init
+terraform plan    # should show: 2 to add
+terraform apply   # type yes
+terraform destroy # type yes
+terraform apply   # recreate — Destroy and Rebuild principle
 
-1. Copy scan.yml and dast-scan.yml into .github/workflows/  
-2. Add SNYK_TOKEN secret  
-3. Commit and push  
-4. Create a feature branch → open PR (vulnerable app is still in app/)  
-5. Snyk blocks the PR — screenshot the failure  
-6. Copy fixed app/ and Dockerfile from this package  
-7. Commit to the same branch → Snyk passes — screenshot clean scan  
-8. Merge PR → deploy-dev.yml auto-deploys to dev  
-9. Run dast-scan.yml against dev → ZAP confirms fix  
-10. Promote to staging → run dast-scan.yml with staging target  
-11. Promote to production
+# 4. Commit (NOT tfvars or tfstate)
+git add terraform/week6/main.tf
+git add terraform/week6/variables.tf
+git add terraform/week6/outputs.tf
+git add terraform/week6/.terraform.lock.hcl
+git commit -m "Week 6: GCS buckets — tfstate + logs"
+git push origin main
+```
+
+## .gitignore additions
+
+Add these to your repo root `.gitignore`:
+
+```
+.terraform/
+*.tfvars
+*.tfstate
+*.tfstate.backup
+```
