@@ -32,8 +32,8 @@ on:
 # ── Shared environment variables ─────────────────────────────────────────────
 # Defined once here, available in all steps below.
 env:
-  REGION:   us-central1
-  REGISTRY: us-central1-docker.pkg.dev
+  REGION:   us-west1
+  REGISTRY: us-west1-docker.pkg.dev
   REPO:     cis410-app          # Artifact Registry repository name
   IMAGE:    flask-app            # Docker image name
   SERVICE:  cis410-flask-app    # Cloud Run service name
